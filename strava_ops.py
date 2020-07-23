@@ -1,8 +1,7 @@
 import pandas as pd
 import requests
 import datetime
-from bs4 import BeautifulSoup
-import Intervals_analyzer.json_ops
+import json_ops
 # from importlib import reload
 # reload(json_ops)
 

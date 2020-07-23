@@ -3,7 +3,7 @@ from unittest import TestCase
 import sys
 sys.path.append('../')
 
-from Intervals_analyzer.athlete_class import BasicAthlete
+from athlete_class import BasicAthlete
 
 class TestBasicAthlete(TestCase):
 

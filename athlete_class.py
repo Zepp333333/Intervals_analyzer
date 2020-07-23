@@ -1,5 +1,3 @@
-import Intervals_analyzer.json_ops
-import Intervals_analyzer.strava_ops
 #from importlib import reload
 # reload(strava_ops)
 # reload(json_ops)
