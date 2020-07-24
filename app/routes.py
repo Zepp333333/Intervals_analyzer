@@ -6,6 +6,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 from werkzeug.urls import url_parse
 from requests import Request
+from strava_ops import get_access_token
 
 
 log = logger.logger
@@ -87,7 +88,14 @@ def user(username):
 
 @app.route('/user/<username>/StravaAuthReturn')
 def state(username):
-    stravaAuthCode = request.args.get('code', default=None, type=str)
-    stravaAuthScope = request.args.get('scope', default=None, type=str)
+    strava_auth_code = request.args.get('code', default=None, type=str)
+    strava_auth_scope = request.args.get('scope', default=None, type=str)
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('StravaAuthReturn.html', code=stravaAuthCode, username=username)
+    strava_athlete_json = get_access_token(None, strava_auth_code)
+    user.set_strava_id(strava_athlete_json['athlete']['id'])
+    db.session.add(user)
+    db.session.commit()
+    user.add_strava_athlete_json(strava_athlete_json)
+    db.session.add(user)
+    db.session.commit()
+    return render_template('StravaAuthReturn.html', code=strava_auth_code, username=username, atuth_json=strava_athlete_json)

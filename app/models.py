@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 from hashlib import md5
+import json
 
 engine = db.create_engine(sa_url='sqlite:///app.db', engine_opts={})
 # r = db.metadata.reflect(engine=engine)
@@ -16,6 +17,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     strava_id = db.Column(db.Integer, index=True, unique=True)
+    strava_athlete_json = db.Column(db.String, index=False)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
 
@@ -35,6 +37,11 @@ class User(UserMixin, db.Model):
 
     def set_strava_id(self, strava_id):
         self.strava_id = strava_id
+
+    def add_strava_athlete_json(self, strava_athlete_json):
+        self.strava_athlete_json = json.dumps(strava_athlete_json)
+
+
 
 
 class Post(db.Model):

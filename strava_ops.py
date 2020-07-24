@@ -22,7 +22,7 @@ access_token = None
 
 #constants for test purposes
 # athlete_auth_code = 'f32ee76ff598e6060c78e7a386f477713317911a'  # SS
-athlete_auth_code = '15d4435ae72bb6f56afc2f7eed5cdaf18d5fefdf'    # test guy
+athlete_auth_code = 'd576423f80a5a96316c7bd53cf169875e2c1c3e6'    # test guy
 # Manual
 # from https://www.youtube.com/watch?v=sgscChKfGyg&list=PLO6KswO64zVvcRyk0G0MAzh5oKMLb6rTW
 
@@ -31,7 +31,7 @@ athlete_auth_code = '15d4435ae72bb6f56afc2f7eed5cdaf18d5fefdf'    # test guy
 # returned code is for SS: f32ee76ff598e6060c78e7a386f477713317911a
 # returned code is for test guy: 3a9835d4e49bb2544cc478601163056b6fb63ec4
 
-# 2) Exchange authorization code for access token & refresh tocken
+# 2) Exchange authorization code for access token & refresh token
 # https://www.strava.com/oauth/token?client_id=50434&client_secret=1ac85eaaa5fcf4a1b4efa75197a81bc4b00464db&code=f32ee76ff598e6060c78e7a386f477713317911a&grant_type=authorization_code
 # returned:
 #   access token  : 56981dcee5d5df70de37498b1bf37ede4b08d4bc
@@ -69,6 +69,7 @@ def refresh_expired_token(access_token):
     # req = requests.Request('POST', url, params=param)
     # r = req.prepare()
     try:
+
         r = requests.post(url, params=param)
     except Exception:
         print("ERROR: Token request failed in get_first_access_token")
@@ -102,7 +103,7 @@ def get_access_token(strava_auth_json, strava_auths_code):
             return r.json() #todo - check validity of the json before returning
         else:
             print("ERROR: Failed to get HTTP 200 response from Strva in get_first_access_token")
-            return r
+            return r.json()
     elif is_strava_token_expired(strava_auth_json):
         return refresh_expired_token(strava_auth_json)
     else:
